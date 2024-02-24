@@ -1,4 +1,6 @@
-from utils import json_to_dict, words_api_call
+from utils import json_to_dict, words_api_call, PDF_to_Text, Category_Terms
 import json
 
-print(words_api_call("restaurant"))
+categories = ["food", "entertainment", "housing"]
+
+print(Category_Terms(categories))

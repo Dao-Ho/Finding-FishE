@@ -1,7 +1,7 @@
 # libraries
 import json
 import requests
-
+import PyPDF2
 
 # global vars
 HEADERS = {
@@ -60,10 +60,34 @@ def score_receipt(rec_json):
                     scoring[True].append(cat)
     scoring['score'] = len(scoring[False]) / len(list(recs)) 
 
-    return scoring 
-    """ 
-    ex return: 
-    ** Note: we have to flag if we have a non-tax-deductible on the receipt regardless... **
-    # raised indicating a raised flag!
-    {'raised': True, 'score': 0.33, True: ['Food'], False: ['Transportation', 'Office Supplies']}
-    """ 
+    return scoring
+
+""" 
+ex return: 
+** Note: we have to flag if we have a non-tax-deductible on the receipt regardless... **
+# raised indicating a raised flag!
+{'raised': True, 'score': 0.33, True: ['Food'], False: ['Transportation', 'Office Supplies']}
+"""
+
+def PDF_to_Text(filename):
+    """
+    :param filename: filename of the pdf
+    :return pdf_text: string of pdf
+    """
+    reader = PyPDF2.PdfReader('testing.pdf')
+
+    pdf_text = reader.pages[0].extract_text()
+
+    return pdf_text
+
+def Category_Terms(list_categories):
+    """
+    :param list_categories: list of categories
+    :return: dictionary of categories where key is the term and value is the list of words from words api
+    """
+    categories_dict = dict()
+    for category in list_categories:
+
+    #categories_dict[f'{category}'] = words_api_call(category)
+
+    return categories_dict
