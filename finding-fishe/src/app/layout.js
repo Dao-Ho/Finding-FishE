@@ -1,4 +1,4 @@
-"use client";
+
 import React from "react";
 import { Inter } from "next/font/google";
 import Head from 'next/head'; // Import Head from next/head
