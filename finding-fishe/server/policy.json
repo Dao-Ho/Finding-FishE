@@ -1,0 +1,8 @@
+{
+  "Transportation": "False",
+  "Food": "True",
+  "Housing": "True",
+  "Entertainment": "True",
+  "OfficeSupplies": "False",
+  "Licences": "False"
+}
