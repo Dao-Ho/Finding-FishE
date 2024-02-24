@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import axios from 'axios';
 
 export default function Dashboard() {
   //state to store the file
@@ -39,9 +40,23 @@ export default function Dashboard() {
 
         // You can now use the jsonString as needed, for example, send it to a server.
         console.log(jsonString);
+
+        sendJsonToBackend(jsonString);
       };
 
       reader.readAsDataURL(file);
+    }
+  };
+
+  const sendJsonToBackend = async (jsonString) => {
+    try {
+      const response = await axios.post('/receive_json', {
+        jsonData: jsonString,
+      });
+
+      console.log('JSON data sent successfully:', response.data);
+    } catch (error) {
+      console.error('Error sending JSON data:', error);
     }
   };
 
