@@ -8,14 +8,16 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   return (
-    <>
+    <html>
       <Head>
         <title>Finding FishE</title>
         <meta name="description" content="Protecting small businesses from tax fraud" />
       </Head>
-      <div className={inter.className}>
-        {children}
-      </div>
-    </>
+      <body>
+        <div className={inter.className}>
+            {children}
+        </div>
+      </body>
+    </html>
   );
 }
