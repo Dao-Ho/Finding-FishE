@@ -1,2 +1,0 @@
-True: "Food, Travel"
-False: "Entertainment"
