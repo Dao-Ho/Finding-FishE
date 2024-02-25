@@ -9,7 +9,37 @@ HEADERS = {
     "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com"
 }
 
-CATEGORY_TERMS = # nee
+
+
+def Category_Terms(list_categories):
+    """
+    :param list_categories: list of categories
+    :return: dictionary of categories where key is the term and value is the list of words from words api
+    """
+
+    categories_dict = dict()
+    for category in list_categories:
+        list_vocab = set()
+        results = words_api_call(category)["results"]
+        for item in results:
+            for key, value in item.items():
+                try:
+                    words = value.split()
+                    for word in words:
+                        list_vocab.add(word)
+                except AttributeError:
+                    for word in value:
+                        words = word.split()
+                        for word in words:
+                            list_vocab.add(word)
+        categories_dict[category] = list_vocab
+
+
+    return categories_dict
+
+
+
+CATEGORY_TERMS = Category_Terms()
 
 def json_to_dict(json_name):
     """
@@ -80,14 +110,21 @@ def PDF_to_Text(filename):
 
     return pdf_text
 
-def Category_Terms(list_categories):
-    """
-    :param list_categories: list of categories
-    :return: dictionary of categories where key is the term and value is the list of words from words api
-    """
-    categories_dict = dict()
-    for category in list_categories:
+def find_all_strings(data, collected_strings=None):
+    if collected_strings is None:
+        collected_strings = []
 
-    #categories_dict[f'{category}'] = words_api_call(category)
+    if isinstance(data, dict):  # If the current data is a dictionary
+        for value in data.values():
+            find_all_strings(value, collected_strings)
+    elif isinstance(data, list):  # If the current data is a list
+        for item in data:
+            find_all_strings(item, collected_strings)
+    elif isinstance(data, str):  # If the current data is a string
+        collected_strings.append(data)  # Collect the string
 
-    return categories_dict
+    return collected_strings
+
+
+
+    #return categories_dict
