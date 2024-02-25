@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import axios from "axios";
+// import axios from "axios";
 import Link from 'next/link';
 import logo from '../../public/fish.png'
 import text_logo from '../../public/text copy.png'
@@ -29,7 +29,7 @@ export default function Home() {
       <div className="flex flex-col h-full w-full items-center justify-center h-screen bg-gradient-to-b from-blue-200 to-white-600">
         <div className="flex flex-col w-full h-full items-center justify-center">
           <Image class="w-[55vw] h-auto mb-10" src={text_logo} ></Image> 
-          <p class="text-base text-[#5b5b5b] text-[3.5vw] leading-6 mb-2">
+          <p class="text-base text-[#5b5b5b] md:text-[3.5vw] leading-6 mb-2">
           Fishing out suspicious expenses for small businesses
           </p>
         </div> 
