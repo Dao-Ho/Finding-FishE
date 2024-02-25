@@ -77,9 +77,7 @@ export default function Dashboard() {
         // You can now use the jsonString as needed, for example, send it to a server.
         console.log(jsonString);
 
-        
-          sendReceiptToBackend(jsonString);
-       
+        sendReceiptToBackend(jsonString);
       };
 
       reader.readAsDataURL(file);
@@ -111,9 +109,7 @@ export default function Dashboard() {
         // You can now use the jsonString as needed, for example, send it to a server.
         console.log(jsonString);
 
-      
-          sendPolicyToBackend(jsonString);
-       
+        sendPolicyToBackend(jsonString);
       };
 
       reader.readAsDataURL(file);
@@ -242,13 +238,23 @@ export default function Dashboard() {
           </h1>
         </div>
         <div className="flex w-full overflow-x-auto mt-[6vh]">
-          <div className="flex-none h-[20vh] bg-[#2770d6] w-[15vw] ml-[2vw] rounded-[1.5vw]"></div>
-          <div className="flex-none h-[20vh] bg-[#2770d6] w-[15vw] ml-[2vw] rounded-[1.5vw]"></div>
-          <div className="flex-none h-[20vh] bg-[#2770d6] w-[15vw] ml-[2vw] rounded-[1.5vw]"></div>
-          <div className="flex-none h-[20vh] bg-[#2770d6] w-[15vw] ml-[2vw] rounded-[1.5vw]"></div>
-          <div className="flex-none h-[20vh] bg-[#2770d6] w-[15vw] ml-[2vw] rounded-[1.5vw]"></div>
-          <div className="flex-none h-[20vh] bg-[#2770d6] w-[15vw] ml-[2vw] rounded-[1.5vw]"></div>
-          <div className="flex-none h-[20vh] bg-[#2770d6] w-[15vw] ml-[2vw] rounded-[1.5vw]"></div>
+          {receipts.map((receipt, index) => (
+            <div
+              key={index}
+              className="flex-none h-[20vh] w-[15vw] ml-[2vw] rounded-[1.5vw] bg-[#2770d6]"
+            >
+              <div className="p-[2vw] text-[1.5vw] text-white font-bold">
+                {/* Debugging: Log categories for each receipt */}
+                {console.log(receipt.categories)}
+
+                {/* Render category-specific information if receipt.categories is not null */}
+                {receipt.categories &&
+                  receipt.categories.map((category, categoryIndex) => (
+                    <p key={categoryIndex}>{category}</p>
+                  ))}
+              </div>
+            </div>
+          ))}
           <div className="absolute z-1 h-[24vh] bg-[#ecf2fc] w-[15vw] right-0"></div>
         </div>
       </div>
@@ -257,7 +263,7 @@ export default function Dashboard() {
       <div className="flex-row bg-[#ecf2fc] h-[55vh] w-[77.5vw]">
         <div className="inline-flex h-[2vh]">
           <h1 className="font-bold text-[1.5vw] ml-[2vw]">
-            Expense Categories
+            Past Receipts
           </h1>
         </div>
         <div className="flex bg-[#ecf2fc] h-[45vh] w-[77.5vw] overflow-y-scroll justify-center">
@@ -278,15 +284,21 @@ export default function Dashboard() {
                         : "#f7dae7",
                   }}
                 >
-                <div className="flex h-full w-[71.5vw] hover:bg-[#e4eefc] bg-[#ffffff]  space-x-[20vw] justify-center items-center font-bold text-[1.25vw]">
-                  {/* Render the content of each receipt based on its attributes */}
-                  <p>ID: {receipt.id}</p>
-                  <p>{receipt.date}</p>
-                  <p>Status: {receipt.status === 0 ? "Approved" : receipt.status === 1 ? "Pending" : "Rejected"}</p>
-                  {/* Add more content or components based on other attributes in the receipt */}
+                  <div className="flex h-full w-[71.5vw] hover:bg-[#e4eefc] bg-[#ffffff]  space-x-[20vw] justify-center items-center font-bold text-[1.25vw]">
+                    {/* Render the content of each receipt based on its attributes */}
+                    <p>ID: {receipt.id}</p>
+                    <p>{receipt.date}</p>
+                    <p>
+                      Status:{" "}
+                      {receipt.status === 0
+                        ? "Approved"
+                        : receipt.status === 1
+                        ? "Pending"
+                        : "Rejected"}
+                    </p>
+                    {/* Add more content or components based on other attributes in the receipt */}
                   </div>
                 </button>
-                
               </Link>
             ))}
           </div>

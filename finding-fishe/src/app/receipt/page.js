@@ -63,7 +63,7 @@ export default function Receipt({ searchParams }) {
   };
 
   return (
-    <div className="flex-row bg-[#ecf2fc] w-screen h-screen">
+    <div className="flex-row bg-[#ecf2fc] w-screen h-full">
     <Link href="/dashboard">
       <button className="absolute w-[25vw] h-[10vh] translate-x-[68.5vw] translate-y-[8vh]">
         <Image src={logo} alt="logo" />
@@ -74,13 +74,13 @@ export default function Receipt({ searchParams }) {
           <div>
             <div className="flex w-[70vw] h-screen items-center justify-center">
               <Image
-                className="border border-[#2770d6] border-[0.35vw] rounded-[0.25vw]"
+                className="border border-[#2770d6] border-[0.35vw] rounded-[0.25vw] mt-[30vh]"
                 src={`data:image/png;base64,${
                   receipts[searchParams.index].image.imageBase64
                 }`}
                 alt=""
-                width={1000}
-                height={800}
+                width={500}
+                height={500}
               />
             </div>
             <div className="flex-row w-[30vw] h-screen translate-x-[66.5vw] -translate-y-[70vh] justify-center ">
