@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-// import axios from "axios";
+import axios from "axios";
 import Link from 'next/link';
 import logo from '../../public/fish.png'
 import text_logo from '../../public/text copy.png'
