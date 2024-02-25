@@ -4,7 +4,7 @@ import json
 import re
 import string
 from base64 import b64decode
-
+import PyPDF2
 import requests
 
 # global vars
@@ -87,7 +87,7 @@ def score_receipt(rec_json):
     # assuming we get the rec_json in term: value paring 
     recs = {term: words_api_call(term) for term in rec_json}
 
-    scoring = {'scoring': 0, True: [], False: []}
+    scoring = {'scoring': 0, 1: [], 0: []}
     for key, value in recs.items(): 
         rec_total = []
         for text in value.values(): 
@@ -98,10 +98,10 @@ def score_receipt(rec_json):
             if len(set(rec_total).intersection(set(cat_vals))) > 0: 
                 # raise flag for cat 
                 if CAT_BOOLS[cat]: 
-                    scoring[True].append(cat)
+                    scoring[1].append(cat)
                 else: 
-                    scoring[True].append(cat)
-    scoring['score'] = len(scoring[False]) / len(list(recs)) 
+                    scoring[1].append(cat)
+    scoring['score'] = len(scoring[0]) / len(list(recs)) 
 
     return scoring
 
@@ -175,7 +175,7 @@ def receipt_reader(data):
     api_url = 'https://api.api-ninjas.com/v1/imagetotext'
     KEY = 'xJfJfcLJptR7aUmr3f6pUQ==eZeulpP2Fx8SietR'
 
-    files = {'image': bytes(data["imageBase64"], 'utf-8'), "X-Api-Key": KEY}
+    files = {'image': b64decode(data["imageBase64"], 'utf-8'), "X-Api-Key": KEY}
 
     response = requests.post(api_url, files=files)
     print(response)
