@@ -58,7 +58,7 @@ export default function Dashboard() {
         jsonData: jsonString,
       });
 
-      console.log("receipt JSON sent successfully:", response.data);
+      console.log("receipt JSON sent successfully:", response.data.yourData);
     } catch (error) {
       console.error("Error sending JSON data:", error);
     }

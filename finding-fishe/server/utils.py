@@ -2,12 +2,17 @@
 import json
 import requests
 import PyPDF2
-
+import re
 # global vars
 HEADERS = {
     "X-RapidAPI-Key": "bc7f72c2b1mshcb60c860004a9b1p1b8e23jsncd13e4c50848",
     "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com"
 }
+
+stopwords = list()
+with open("stopwords.txt", 'r') as file:
+    for line in file:
+        stopwords.append(line)
 
 
 
@@ -39,7 +44,7 @@ def Category_Terms(list_categories):
 
 
 
-CATEGORY_TERMS = Category_Terms()
+#CATEGORY_TERMS = Category_Terms()
 
 def json_to_dict(json_name):
     """
@@ -111,4 +116,28 @@ def PDF_to_Text(filename):
     return pdf_text
 
 
+def receipt_reader(data):
 
+    set_words = set()
+    pattern = r'[0-9\W]'
+    api_url = 'https://api.api-ninjas.com/v1/imagetotext'
+    KEY = 'xJfJfcLJptR7aUmr3f6pUQ==eZeulpP2Fx8SietR'
+
+    files = {'image': bytes(data["imageBase64"], 'utf-8'), "X-Api-Key": KEY}
+
+    response = requests.post(api_url, files=files)
+    print(response)
+    for word_list in response.json():
+        print(word_list)
+        word = word_list['text'].lower()
+        if "tip" in word:
+            word = "tip"
+        if word in stopwords:
+            continue
+        else:
+            set_words.add(word)
+
+    set_words = {item for item in set_words if not re.search(pattern, item)}
+
+    # Print the JSON response
+    return set_words
