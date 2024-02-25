@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import Link from "next/link";
 
 export default function Receipt({ searchParams }) {
+    
 
   const [receipts, setReceipts] = useState([]);
   //state to store the file
@@ -21,6 +22,7 @@ export default function Receipt({ searchParams }) {
   const supabase = createClient(supabaseUrl, supabaseKey);
   // State to store the base64
   const [base64, setBase64] = useState(null);
+  
 
   useEffect(() => {
     // Fetch data from Supabase when the component mounts
@@ -40,17 +42,25 @@ export default function Receipt({ searchParams }) {
       console.error("Error fetching data:", error);
     }
   };
+
+
   return (
-    <div>
+    <div className="bg-[#ecf2fc] w-screen h-screen">
       <h1>Receipt</h1>
       {/* Render the content based on the index */}
-      {searchParams.index !== undefined && searchParams.index < receipts.length && (
-      <div>
-        <p>Receipt Date: {receipts[searchParams.index].date}</p>
-        <p>Receipt ID: {receipts[searchParams.index].id}</p>
-        <p>Receipt Status: {receipts[searchParams.index].status}</p>
-        {/* Add more content or components based on other attributes in the receipt */}
-      </div>
+        {searchParams.index !== undefined && searchParams.index < receipts.length && (
+        <div>
+            <p>Receipt Date: {receipts[searchParams.index].date}</p>
+            <p>Receipt ID: {receipts[searchParams.index].id}</p>
+            <p>Receipt Status: {receipts[searchParams.index].status}</p>
+            <Image
+                src={`data:image/png;base64,${receipts[searchParams.index].image.imageBase64}`}
+                alt=""
+                width={500}
+                height={500}
+                />
+             
+        </div>
     )}
     </div>
   );

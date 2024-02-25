@@ -268,17 +268,17 @@ export default function Dashboard() {
                 href={{ pathname: "/receipt", query: { index: index } }}
               >
                 <button
-                  className="flex ml-[1.5vw] h-[10vh] w-[73vw] rounded-[1vw] text-black mt-[2vh] justify-center items-center"
+                  className="flex ml-[1.5vw] h-[10vh] w-[73vw] rounded-[1vw] text-black mt-[2vh] justify-center items-center hover:bg-[#e4eefc]"
                   style={{
                     backgroundColor:
                       receipt.status === 0
-                        ? "green"
+                        ? "#bfe4ec"
                         : receipt.status === 1
-                        ? "yellow"
-                        : "red",
+                        ? "#fff5c4"
+                        : "#f7dae7",
                   }}
                 >
-                <div className="h-full w-[71.5vw] bg-[#ffffff]">
+                <div className="h-full w-[71.5vw] bg-[#ffffff] hover:bg-[#e4eefc]">
                   {/* Render the content of each receipt based on its attributes */}
                   <p>Receipt Date: {receipt.date}</p>
                   <p>receipt ID: {receipt.id}</p>
