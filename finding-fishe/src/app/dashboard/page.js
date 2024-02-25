@@ -278,11 +278,11 @@ export default function Dashboard() {
                         : "#f7dae7",
                   }}
                 >
-                <div className="h-full w-[71.5vw] bg-[#ffffff] hover:bg-[#e4eefc]">
+                <div className="flex h-full w-[71.5vw] hover:bg-[#e4eefc] bg-[#ffffff]  space-x-[20vw] justify-center items-center font-bold text-[1.25vw]">
                   {/* Render the content of each receipt based on its attributes */}
-                  <p>Receipt Date: {receipt.date}</p>
-                  <p>receipt ID: {receipt.id}</p>
-                  <p>receipt Status: {receipt.status}</p>
+                  <p>ID: {receipt.id}</p>
+                  <p>{receipt.date}</p>
+                  <p>Status: {receipt.status === 0 ? "Approved" : receipt.status === 1 ? "Pending" : "Rejected"}</p>
                   {/* Add more content or components based on other attributes in the receipt */}
                   </div>
                 </button>
