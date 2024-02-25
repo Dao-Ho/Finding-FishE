@@ -50,7 +50,7 @@ export default function Dashboard() {
 
   const sendJsonToBackend = async (jsonString) => {
     try {
-      const response = await axios.post('/receive_json', {
+      const response = await axios.post('http://localhost:8080/receive_json', {
         jsonData: jsonString,
       });
 
