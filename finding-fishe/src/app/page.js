@@ -47,6 +47,11 @@ export default function Home() {
               <Image className="w-[15vw] h-auto ml-[35vw] mb-[15vw]" src={puffer} ></Image> 
             </div>
           </div>
+          <div className="flex w-full h-[30vh] items-center">
+          <p class = "text-base text-[#5b5b5b] md:text-[3.5vw] leading-6 mb-2 bg-[#7ccbd2]">
+            Upload your company requirements! What spending categories are acceptable and what are prohibited?
+          </p>
+          </div>
         </div>
       </div>
   );

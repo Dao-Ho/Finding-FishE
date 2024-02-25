@@ -3,6 +3,6 @@
   "Food": "True",
   "Housing": "True",
   "Entertainment": "True",
-  "OfficeSupplies": "False",
+  "Office": "False",
   "Licences": "False"
 }
