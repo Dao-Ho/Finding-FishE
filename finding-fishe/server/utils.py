@@ -77,7 +77,7 @@ def words_api_call(word):
     return dictionary
 
 
-def score_receipt(rec_json): 
+def score_receipt(rec_json, cat_terms, cat_bools):
     """ Scores a json obj of a single receipt based on company policy sentiments 
     Args: 
         rec_json (json/dict): a json/dct obj containing receipt information 
@@ -94,10 +94,10 @@ def score_receipt(rec_json):
             rec_total += value
 
         # assuming we have category terms : term values from api call minus stop words 
-        for cat, cat_vals in CATEGORY_TERMS.items(): 
+        for cat, cat_vals in cat_terms.items():
             if len(set(rec_total).intersection(set(cat_vals))) > 0: 
                 # raise flag for cat 
-                if CAT_BOOLS[cat]: 
+                if cat_bools[cat]:
                     scoring[1].append(cat)
                 else: 
                     scoring[1].append(cat)
@@ -124,7 +124,7 @@ def PDF_to_Text(filename):
     pdf_text = pdf_text.split("\n")
 
     return " ".join(pdf_text)
-def sentiment(filename):
+def policy_bools(filename):
     pos_neg = {'pos': {'can', 'allow', 'allowed', 'permit', 'permitted'}, 'neg': {'not', 'cannot', 'no'}}
     text = PDF_to_Text(filename)
     text = text.split(".")
