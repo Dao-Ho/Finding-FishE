@@ -33,22 +33,37 @@ export default function Home() {
           Fishing out suspicious expenses for small businesses
           </p>
         </div> 
-        <div className="flex w-full h-[30vh] items-center justify-center">
+        <div className="absolute w-full h-[30vh] items-center justify-center ml-[80vw] mt-[20vh]">
         <Link  href='/dashboard'> 
         <button class="items-center shadow text-[2vw] font-bold bg-[#f06f5c] w-[20vw] py-[3vh] rounded-xl text-white h-auto font-roboto transition-all duration-300 hover:scale-110 hover:shadow-md">
           Get started
         </button> </Link>
         </div>
-          <div className="flex w-full h-full items-center justify-center"> 
+          <div className="flex w-full h-full items-center justify-center mt-[30vh]"> 
             <div className="absolute inline-flex-[50vh]"> 
-              <Image className="w-[15vw] h-auto mr-[35vw] mb-[15vw]" src={turtle} ></Image> 
+              <Image className="w-[15vw] h-auto mr-[40vw] mb-[15vw]" src={turtle} ></Image> 
             </div>
             <div className="absolute inline-flex-[50vh]"> 
-              <Image className="w-[15vw] h-auto ml-[35vw] mb-[15vw]" src={puffer} ></Image> 
+              <Image className="w-[15vw] h-auto ml-[40vw] mb-[15vw]" src={puffer} ></Image> 
             </div>
           </div>
-          <div className="flex w-full h-[30vh] items-center">
+          {/* <div className = "flex w-[40vw] h-auto justify-center items-center">
+          <div className="abosolute w-[40vw] h-[30vh] items-center p-4 max-w-md mx-auto my-4">
+            <p class="text-base text-center text-[#5b5b5b] items-center shadow text-[2vw] font-bold bg-[#44c3ca] w-[20vw] py-[3vh] rounded-xl text-white h-auto font-roboto hover:scale-110">
+              Upload your company requirements and we will take it from there! 
+            </p>
           </div>
+          <div className="absolute w-[40vw] h-[30vh] items-center p-4 max-w-md mx-auto my-4">
+            <p class="text-base text-center text-[#5b5b5b] items-center shadow text-[2vw] font-bold bg-[#44c3ca] w-[20vw] py-[3vh] rounded-xl text-white h-auto font-roboto hover:scale-110">
+              Flag suspicious reciepts as fraud and limit non-bussiness expenses purchased with your company's earnings 
+            </p>
+          </div>
+          <div className="w-[40vw] h-[30vh] items-center p-4 max-w-md mx-auto my-4 ml-[40vw]">
+            <p class="text-base text-center text-[#5b5b5b] items-center shadow text-[2vw] font-bold bg-[#44c3ca] w-[20vw] py-[3vh] rounded-xl text-white h-auto font-roboto hover:scale-110">
+              Reupload company requirements anytime to reflect any changes in acceptable spending categories. 
+            </p>
+          </div>
+          </div> */}
         </div>
       </div>
   );
