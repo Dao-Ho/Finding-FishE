@@ -3,6 +3,8 @@ import json
 import requests
 import PyPDF2
 import re
+import string
+
 # global vars
 HEADERS = {
     "X-RapidAPI-Key": "bc7f72c2b1mshcb60c860004a9b1p1b8e23jsncd13e4c50848",
@@ -12,6 +14,7 @@ HEADERS = {
 stopwords = list()
 with open("stopwords.txt", 'r') as file:
     for line in file:
+        line = line.replace("\n", '')
         stopwords.append(line)
 
 
@@ -25,18 +28,21 @@ def Category_Terms(list_categories):
     categories_dict = dict()
     for category in list_categories:
         list_vocab = set()
-        results = words_api_call(category)["results"]
-        for item in results:
-            for key, value in item.items():
-                try:
-                    words = value.split()
-                    for word in words:
-                        list_vocab.add(word)
-                except AttributeError:
-                    for word in value:
-                        words = word.split()
+        try:
+            results = words_api_call(category)["results"]
+            for item in results:
+                for key, value in item.items():
+                    try:
+                        words = value.split()
                         for word in words:
                             list_vocab.add(word)
+                    except AttributeError:
+                        for word in value:
+                            words = word.split()
+                            for word in words:
+                                list_vocab.add(word)
+        except KeyError:
+            continue
         categories_dict[category] = list_vocab
 
 
@@ -113,7 +119,51 @@ def PDF_to_Text(filename):
 
     pdf_text = reader.pages[0].extract_text()
 
-    return pdf_text
+    pdf_text = pdf_text.split("\n")
+
+    return " ".join(pdf_text)
+def sentiment(filename):
+    pos_neg = {'pos': {'can', 'allow', 'allowed', 'permit', 'permitted'}, 'neg': {'not', 'cannot', 'no'}}
+    text = PDF_to_Text(filename)
+    text = text.split(".")
+    sentences = []
+    for sentence in text:
+        print(sentence)
+        sentence = sentence.translate(str.maketrans('', '', string.punctuation))
+        sentence = sentence.lower()
+        sentence = sentence.split()
+        sentence = [word for word in sentence if word not in stopwords]
+        print(sentence)
+        if sentence:
+            sentences.append(sentence)
+
+    with open('policy.json', 'r') as file:
+        data = json.load(file)
+
+    category_list = list()
+    for key, value in data.items():
+        category_list.append(key)
+    category_list = [item.lower() for item in category_list]
+
+    cat_terms = Category_Terms(category_list)
+
+    policy = dict()
+
+    for row in sentences:
+        for key, value in cat_terms.items():
+            value = list(value)
+            print(set([key] + value))
+            commonwords = set(row).intersection((set([key] + value)))
+            print(key)
+            if len(commonwords) > 0:
+                neg_words = len(set(row).intersection(pos_neg['neg']))
+                if neg_words > 0:
+                    policy[key] = True
+                else:
+                    policy[key] = False
+
+    return policy
+
 
 
 def receipt_reader(data):
@@ -141,3 +191,7 @@ def receipt_reader(data):
 
     # Print the JSON response
     return set_words
+
+
+def decode_pdf(data):
+

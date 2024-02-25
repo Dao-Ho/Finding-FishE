@@ -1,6 +1,8 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from utils import receipt_reader
+from base64 import b64decode
+
+#from utils import receipt_reader
 #create flask app
 app = Flask(__name__)
 
@@ -34,7 +36,6 @@ def policy_json():
         # Get the JSON data
         data = request.get_json()
 
-        receipt_reader(data)
 
         # You can now process the data as needed
 
