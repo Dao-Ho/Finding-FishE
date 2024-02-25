@@ -41,16 +41,16 @@ export default function Dashboard() {
         // You can now use the jsonString as needed, for example, send it to a server.
         console.log(jsonString);
 
-        sendJsonToBackend(jsonString);
+        sendReceiptToBackend(jsonString);
       };
 
       reader.readAsDataURL(file);
     }
   };
 
-  const sendJsonToBackend = async (jsonString) => {
+  const sendReceiptToBackend = async (jsonString) => {
     try {
-      const response = await axios.post('/receive_json', {
+      const response = await axios.post('http://localhost:8080/receipt_json', {
         jsonData: jsonString,
       });
 
@@ -59,7 +59,6 @@ export default function Dashboard() {
       console.error('Error sending JSON data:', error);
     }
   };
-
 
   return (
     <div className="w-screen h-screen bg-[#ecf2fc]">
@@ -76,8 +75,18 @@ export default function Dashboard() {
             type="file"
             style={{ display: "none" }}
             onChange={handleFileChange}
-          />
-            upload
+          />receipt
+          </button>
+          <button
+            onClick={handleUpload}
+            className="bg-[#164e86] w-[17vw] h-[17vw] mt-[3vh] rounded-[1vw] text-white"
+          >
+          <input
+            ref={fileInput}
+            type="file"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          /> receipt
           </button>
       </div>
     </div>
