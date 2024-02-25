@@ -35,7 +35,7 @@ export default function Home() {
         </div> 
         <div className="flex w-full h-[30vh] items-center justify-center">
         <Link  href='/dashboard'> 
-        <button class="items-center shadow text-[2vw] font-bold bg-[#f06f5c] w-[20vw] py-[3vh] rounded-xl w-[20vw] text-white h-auto font-roboto transition-all duration-300 hover:scale-110 hover:shadow-md">
+        <button class="items-center shadow text-[2vw] font-bold bg-[#f06f5c] w-[20vw] py-[3vh] rounded-xl text-white h-auto font-roboto transition-all duration-300 hover:scale-110 hover:shadow-md">
           Get started
         </button> </Link>
         </div>
