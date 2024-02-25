@@ -110,21 +110,5 @@ def PDF_to_Text(filename):
 
     return pdf_text
 
-def find_all_strings(data, collected_strings=None):
-    if collected_strings is None:
-        collected_strings = []
-
-    if isinstance(data, dict):  # If the current data is a dictionary
-        for value in data.values():
-            find_all_strings(value, collected_strings)
-    elif isinstance(data, list):  # If the current data is a list
-        for item in data:
-            find_all_strings(item, collected_strings)
-    elif isinstance(data, str):  # If the current data is a string
-        collected_strings.append(data)  # Collect the string
-
-    return collected_strings
 
 
-
-    #return categories_dict
