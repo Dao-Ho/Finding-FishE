@@ -1,9 +1,11 @@
 # libraries
 import json
-import requests
-import PyPDF2
+
 import re
 import string
+from base64 import b64decode
+
+import requests
 
 # global vars
 HEADERS = {
@@ -195,3 +197,11 @@ def receipt_reader(data):
 
 def decode_pdf(data):
 
+    data = data["jsonData"]
+    parsed_json = json.loads(data)
+    base64_data = parsed_json["imageBase64"]
+
+    bytes = b64decode(base64_data, validate=True)
+    f = open('POLICY.pdf', 'wb')
+    f.write(bytes)
+    f.close()

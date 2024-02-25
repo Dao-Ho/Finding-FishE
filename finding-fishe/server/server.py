@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from base64 import b64decode
-
+from utils import decode_pdf
 #from utils import receipt_reader
 #create flask app
 app = Flask(__name__)
@@ -35,13 +34,13 @@ def policy_json():
     if request.is_json:
         # Get the JSON data
         data = request.get_json()
-
+        decode_pdf(data)
 
         # You can now process the data as needed
 
 
         # Respond back with a success message
-        return jsonify({"message": "JSON received successfully!", "yourData": "hi"}), 200
+        return jsonify({"message": "JSON received successfully!", "yourData": "GOT POLICY PDF"}), 200
     else:
         return jsonify({"error": "Request must be JSON"}), 400
 #debug mode
