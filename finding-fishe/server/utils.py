@@ -20,7 +20,6 @@ with open("stopwords.txt", 'r') as file:
         stopwords.append(line)
 
 
-
 def Category_Terms(list_categories):
     """
     :param list_categories: list of categories
@@ -29,30 +28,28 @@ def Category_Terms(list_categories):
 
     categories_dict = dict()
     for category in list_categories:
-        list_vocab = set()
+        list_vocab = [category]
         try:
-            results = words_api_call(category)["results"]
+            
+            results = words_api_call(category)["hasTypes"]
             for item in results:
-                for key, value in item.items():
-                    try:
-                        words = value.split()
-                        for word in words:
-                            list_vocab.add(word)
-                    except AttributeError:
-                        for word in value:
-                            words = word.split()
-                            for word in words:
-                                list_vocab.add(word)
+                list_vocab += item
+            categories_dict[category] = set(list_vocab)
+        #         for key, value in item.items():
+        #             try:
+        #                 words = value.split()
+        #                 for word in words:
+        #                     list_vocab.add(word)
+        #             except AttributeError:
+        #                 for word in value:
+        #                     words = word.split()
+        #                     for word in words:
+        #                         list_vocab.add(word)
         except KeyError:
-            continue
-        categories_dict[category] = list_vocab
-
+             continue
+        #categories_dict[category] = list_vocab
 
     return categories_dict
-
-
-
-#CATEGORY_TERMS = Category_Terms()
 
 def json_to_dict(json_name):
     """
@@ -70,12 +67,11 @@ def words_api_call(word):
     :param word: string that we want a json for from words api
     :return dictoinary: dictionary of json that api returns
     """
-    url = f'https://wordsapiv1.p.rapidapi.com/words/{word}'
+    url = f'https://wordsapiv1.p.rapidapi.com/words/{word}/hasTypes'
     response = requests.get(url, headers=HEADERS)
     dictionary = response.json()
 
     return dictionary
-
 
 def score_receipt(rec_json, cat_terms, cat_bools):
     """ Scores a json obj of a single receipt based on company policy sentiments 
@@ -85,32 +81,31 @@ def score_receipt(rec_json, cat_terms, cat_bools):
         json containing the score & the categories in the receipt. 
     """
     # assuming we get the rec_json in term: value paring 
+    
     recs = {term: words_api_call(term) for term in rec_json}
-
+    print(recs)
     scoring = {'scoring': 0, 1: [], 0: []}
     for key, value in recs.items(): 
-        rec_total = []
-        for text in value.values(): 
-            rec_total += value
-
+        rec_total = [key]
+        if 'hasTypes' in value: 
+            for text in value.values(): 
+                if len(text) == 1: 
+                    rec_total += value
+                    
+            
+        
         # assuming we have category terms : term values from api call minus stop words 
+        print(cat_bools)
         for cat, cat_vals in cat_terms.items():
             if len(set(rec_total).intersection(set(cat_vals))) > 0: 
                 # raise flag for cat 
                 if cat_bools[cat]:
                     scoring[1].append(cat)
                 else: 
-                    scoring[1].append(cat)
+                    scoring[0].append(cat)
     scoring['score'] = len(scoring[0]) / len(list(recs)) 
 
     return scoring
-
-""" 
-ex return: 
-** Note: we have to flag if we have a non-tax-deductible on the receipt regardless... **
-# raised indicating a raised flag!
-{'raised': True, 'score': 0.33, True: ['Food'], False: ['Transportation', 'Office Supplies']}
-"""
 
 def PDF_to_Text(filename):
     """
@@ -124,39 +119,41 @@ def PDF_to_Text(filename):
     pdf_text = pdf_text.split("\n")
 
     return " ".join(pdf_text)
+
 def policy_bools(filename):
     pos_neg = {'pos': {'can', 'allow', 'allowed', 'permit', 'permitted'}, 'neg': {'not', 'cannot', 'no'}}
     text = PDF_to_Text(filename)
+    
     text = text.split(".")
     sentences = []
     for sentence in text:
-        print(sentence)
+        
         sentence = sentence.translate(str.maketrans('', '', string.punctuation))
         sentence = sentence.lower()
         sentence = sentence.split()
         sentence = [word for word in sentence if word not in stopwords]
-        print(sentence)
+       
         if sentence:
             sentences.append(sentence)
 
     with open('policy.json', 'r') as file:
         data = json.load(file)
-
+    
     category_list = list()
     for key, value in data.items():
         category_list.append(key)
     category_list = [item.lower() for item in category_list]
-
+    
     cat_terms = Category_Terms(category_list)
-
+    
     policy = dict()
 
     for row in sentences:
         for key, value in cat_terms.items():
             value = list(value)
-            print(set([key] + value))
+           
             commonwords = set(row).intersection((set([key] + value)))
-            print(key)
+            
             if len(commonwords) > 0:
                 neg_words = len(set(row).intersection(pos_neg['neg']))
                 if neg_words > 0:
@@ -167,20 +164,19 @@ def policy_bools(filename):
     return policy
 
 
-
 def receipt_reader(data):
 
     set_words = set()
     pattern = r'[0-9\W]'
     api_url = 'https://api.api-ninjas.com/v1/imagetotext'
-    KEY = 'xJfJfcLJptR7aUmr3f6pUQ==eZeulpP2Fx8SietR'
+    KEY = 'Uf5iuL5k/xMe17Y5NAUB8g==iAsa6PuMEPNQ0jzb'
+    headers = {"X-Api-Key": KEY}
+    files = {'image': b64decode(data["imageBase64"])}
 
-    files = {'image': b64decode(data["imageBase64"], 'utf-8'), "X-Api-Key": KEY}
-
-    response = requests.post(api_url, files=files)
-    print(response)
+    response = requests.post(api_url, files=files, headers=headers)
+    
     for word_list in response.json():
-        print(word_list)
+        
         word = word_list['text'].lower()
         if "tip" in word:
             word = "tip"
@@ -193,7 +189,6 @@ def receipt_reader(data):
 
     # Print the JSON response
     return set_words
-
 
 def decode_pdf(data):
 
